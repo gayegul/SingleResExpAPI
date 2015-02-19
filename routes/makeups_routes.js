@@ -13,6 +13,14 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/makeups/:id', function(req, res) {
+		Makeup.find({_id: req.params.id}, function(err, data) {
+			if (err) return res.status(500).send({'msg': 'could not retrieve makeup'});
+
+			res.json(data);
+		});
+	});
+
 	app.post('/makeups', function(req, res) {
 		var newMakeup = new Makeup(req.body);
 		newMakeup.save(function(err, makeup) {
@@ -26,9 +34,17 @@ module.exports = function(app) {
 		var updatedMakeup = req.body;
 		delete updatedMakeup._id;
 		Makeup.update({_id: req.params.id}, updatedMakeup, function(err) {
-			if (err) return res.status(500).send({'msg': 'could not update makeup' + err});
+			if (err) return res.status(500).send({'msg': 'could not update makeup'});
 		
 			res.json(req.body);
+		});
+	});
+
+	app.delete('/makeups/:id', function(req, res) {
+		Makeup.findByIdAndRemove(req.params.id, function(err, makeup) {
+			if (err) return res.status(500).send({'msg': 'could not delete makeup'});
+
+			res.json(null);
 		});
 	});
 };

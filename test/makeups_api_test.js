@@ -74,6 +74,16 @@ describe('makeups api end points', function() {
 				done();
 			});
 		});
+
+		it('should be able to delete a makeup', function(done) {
+			chai.request('localhost:3000/api/v1')
+			.delete('/makeups/' + id)
+			.end(function(err, res) {
+				expect(err).to.eql(null);
+				expect(res.body).to.eql({});
+				done();
+			});
+		});
 	});
 });
 
